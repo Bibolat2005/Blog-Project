@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile of {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ user.username }}'s Profile</h2>
+    
+    <div class="profile-info">
+        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="profile-pic" style="width:150px;height:150px;">
+        
+        <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
+        
+        {% if user != request.user %}
+            {% if is_following %}
+                <form method="POST" action="{% url 'unfollow_user' user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Unfollow</button>
+                </form>
+            {% else %}
+                <form method="POST" action="{% url 'follow_user' user.username %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Follow</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'edit_profile' user.username %}" class="btn btn-secondary">Edit Profile</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
