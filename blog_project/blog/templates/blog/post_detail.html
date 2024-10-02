@@ -10,7 +10,7 @@
 </ul>
 
 <h3>Add a Comment</h3>
-<form method="POST">
+<form method="POST" action="{% url 'add_comment_to_post' post.pk %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Submit</button>

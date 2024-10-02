@@ -14,7 +14,9 @@ class PostListView(ListView):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.all()
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
+    form = CommentForm()
+    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'form': form})
+
 
 def post_create(request):
     if request.method == 'POST':
@@ -48,14 +50,22 @@ def post_delete(request, pk):
         return redirect('post_list')
     return HttpResponseForbidden("You are not allowed to delete this post.")
 
+
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
+            comment.post = post  # Привязываем комментарий к посту
+            comment.author = request.user  # Устанавливаем автора комментария
             comment.save()
             return redirect('post_detail', pk=pk)
+        else:
+            comments = post.comments.all()
+            return render(request, 'blog/post_detail.html', {
+                'post': post,
+                'form': form,
+                'comments': comments
+            })
     return redirect('post_detail', pk=pk)

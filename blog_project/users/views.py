@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from .models import Follow, User                    #?
+from .models import Follow, User             
 from .forms import ProfileForm
 
 def register(request):
@@ -32,7 +32,6 @@ def edit_profile(request):
         form = ProfileForm(instance=profile)
     return render(request, 'users/edit_profile.html', {'form': form})
 
-from .models import Follow
 
 def follow_user(request, username):
     user_to_follow = get_object_or_404(User, username=username)
