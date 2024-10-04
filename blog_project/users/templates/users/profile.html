@@ -23,12 +23,12 @@
     <div class="container">
         <div class="profile-header">
             {% if profile.profile_picture %}
-                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" width="50" height="50">
+                <img src="{{ profile.profile_picture.url }}" width="50" height="50">
             {% else %}
-                <img src="path_to_default_image.jpg" alt="Default profile picture" width="50" height="50"> <!-- Replace with your default image path -->
+                <img src="{{ MEDIA_URL }}profile_pics/no-profile-picture-icon.webp" alt="Default profile picture" width="50" height="50"> 
             {% endif %}
             <h2>{{ profile.user.username }}'s Profile</h2>
-        </div>
+        </div>      
 
         <p>Bio: {{ profile.bio }}</p>
         <p>Followers: {{ followers_count }}</p>

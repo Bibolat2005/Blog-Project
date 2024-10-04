@@ -5,6 +5,7 @@ from .models import Follow, User, Profile
 from .forms import ProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.conf import settings
 
 
 
@@ -58,6 +59,7 @@ def profile_detail(request, username):
         'followers_count': followers_count,
         'following_count': following_count,
         'followers': followers, 
+        'MEDIA_URL': settings.MEDIA_URL,
     })
 
 
@@ -70,7 +72,7 @@ def edit_profile(request):
             return redirect('profile_detail', username=request.user.username)
     else:
         form = ProfileForm(instance=profile)
-    return render(request, 'users/profile.html', {'form': form})  # not done
+    return render(request, 'users/profile.html', {'form': form}) 
 
 def follow_user(request, username):
     user_to_follow = get_object_or_404(User, username=username)
