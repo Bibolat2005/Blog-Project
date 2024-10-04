@@ -21,7 +21,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog/', include('blog.urls')),  # Include blog app URLs
-    path('users/', include('users.urls')),  # Include users app URLs
-    path('', include('blog.urls')),  # Redirect the homepage to the blog post list
+    path('blog/', include('blog.urls')), 
+    path('users/', include('users.urls')),  
+    path('', include('blog.urls')),  
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

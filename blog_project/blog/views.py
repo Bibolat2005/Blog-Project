@@ -4,18 +4,23 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from .forms import PostForm, CommentForm
 from .models import Post
+from django.contrib.auth.decorators import login_required
+from .models import Comment
+from django.shortcuts import render, get_object_or_404, redirect
+# from django.views.generic import ListView
+# from django.contrib.auth.models import User
 
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     ordering = ['-created_at']
+    
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = post.comments.all()
-    form = CommentForm()
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'form': form})
+    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
 def post_create(request):
@@ -43,6 +48,7 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/post_form.html', {'form': form})
 
+
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.user == post.author:
@@ -50,22 +56,23 @@ def post_delete(request, pk):
         return redirect('post_list')
     return HttpResponseForbidden("You are not allowed to delete this post.")
 
-
+@login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = post  # Привязываем комментарий к посту
-            comment.author = request.user  # Устанавливаем автора комментария
+            comment.post = post  
+            comment.author = request.user
             comment.save()
-            return redirect('post_detail', pk=pk)
-        else:
-            comments = post.comments.all()
-            return render(request, 'blog/post_detail.html', {
-                'post': post,
-                'form': form,
-                'comments': comments
-            })
-    return redirect('post_detail', pk=pk)
+            return redirect('post_detail', pk=pk) 
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
+
+
+# class UserListView(ListView):
+#     model = User
+#     template_name = 'users/user_list.html'  # Create this template
+#     context_object_name = 'users'

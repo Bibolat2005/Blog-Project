@@ -1,14 +1,24 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        .container { max-width: 400px; margin: auto; }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; background-color: blue; color: white; }
+    </style>
+</head>
 
-{% block title %}Register{% endblock %}
 
-{% block content %}
-<div class="container">
-    <h2>Register</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Register</button>
-    </form>
-</div>
-{% endblock %}
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+</body>
+</html>

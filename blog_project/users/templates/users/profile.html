@@ -1,31 +1,77 @@
-{% extends 'base.html' %}
-
-{% block title %}Profile of {{ user.username }}{% endblock %}
-
-{% block content %}
-<div class="container">
-    <h2>{{ user.username }}'s Profile</h2>
-    
-    <div class="profile-info">
-        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="profile-pic" style="width:150px;height:150px;">
-        
-        <p><strong>Bio:</strong> {{ user.profile.bio }}</p>
-        
-        {% if user != request.user %}
-            {% if is_following %}
-                <form method="POST" action="{% url 'unfollow_user' user.username %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Unfollow</button>
-                </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile.user.username }}'s Profile</title>
+    <style>
+        .container { max-width: 400px; margin: auto; }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .btn { padding: 10px 20px; border: none; cursor: pointer; background-color: blue; color: white; margin-top: 10px; }
+        .btn-danger { background-color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            {% if profile.profile_picture %}
+                <img src="{{ profile.profile_picture.url }}" alt="{{ profile.user.username }}'s profile picture" width="50" height="50">
             {% else %}
-                <form method="POST" action="{% url 'follow_user' user.username %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">Follow</button>
-                </form>
+                <img src="path_to_default_image.jpg" alt="Default profile picture" width="50" height="50"> <!-- Replace with your default image path -->
             {% endif %}
-        {% else %}
-            <a href="{% url 'edit_profile' user.username %}" class="btn btn-secondary">Edit Profile</a>
+            <h2>{{ profile.user.username }}'s Profile</h2>
+        </div>
+
+        <p>Bio: {{ profile.bio }}</p>
+        <p>Followers: {{ followers_count }}</p>
+        <p>Following: {{ following_count }}</p>
+
+ 
+        <h3>Followers:</h3>
+        <ul>
+            {% for follower in followers %}
+                <li>{{ follower }}</li>
+            {% empty %}
+                <li>No followers yet.</li>
+            {% endfor %}
+        </ul>
+
+
+        {% if form %}
+            <h3>Edit Profile</h3>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn">Save Changes</button>
+            </form>
+        {% endif %}
+
+
+        {% if request.user != profile.user %}  
+        <form method="POST">
+            {% csrf_token %}
+            {% if not is_following %}
+                <button type="submit" name="follow" class="btn">Follow</button>
+            {% else %}
+                <button type="submit" name="unfollow" class="btn">Unfollow</button>
+            {% endif %}
+        </form>
+        {% endif %}
+
+        {% if request.user == profile.user %}
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
         {% endif %}
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
