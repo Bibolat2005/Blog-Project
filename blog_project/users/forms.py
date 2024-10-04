@@ -9,3 +9,4 @@ class ProfileForm(forms.ModelForm):
             'bio': forms.Textarea(attrs={'class': 'form-control'}),
             'profile_picture': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
+        

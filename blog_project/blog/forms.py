@@ -17,3 +17,8 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+class PostSearchForm(forms.Form):
+    title = forms.CharField(required=False, label='Title')
+    author = forms.CharField(required=False, label='Author')
+    created_after = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}), label='Posting_time')

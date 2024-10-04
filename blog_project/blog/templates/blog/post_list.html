@@ -1,9 +1,24 @@
-<h1>Post List</h1>
+<form method="GET" action="{% url 'post_list' %}">
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title" value="{{ request.GET.title }}">
+
+    <label for="author">Author:</label>
+    <input type="text" name="author" id="author" value="{{ request.GET.author }}">
+
+    <label for="posting_time">Posted time:</label>
+    <input type="date" name="posting_time" id="posting_time" value="{{ request.GET.posting_time }}">
+
+
+    <button type="submit">Search</button>
+</form>
+
 <ul>
     {% for post in posts %}
         <li>
             <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
             by {{ post.author.username }} on {{ post.created_at }}
         </li>
+    {% empty %}
+        <li>No posts found.</li>
     {% endfor %}
 </ul>

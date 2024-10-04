@@ -90,6 +90,3 @@ def redirect_to_profile(request):
     if request.user.is_authenticated:
         return redirect(reverse('profile_detail', kwargs={'username': request.user.username}))
     return redirect('login')
-
-
-

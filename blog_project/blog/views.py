@@ -7,8 +7,6 @@ from .models import Post
 from django.contrib.auth.decorators import login_required
 from .models import Comment
 from django.shortcuts import render, get_object_or_404, redirect
-# from django.views.generic import ListView
-# from django.contrib.auth.models import User
 
 class PostListView(ListView):
     model = Post
@@ -16,6 +14,27 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-created_at']
     
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        title = self.request.GET.get('title')
+        author = self.request.GET.get('author')
+        posting_time = self.request.GET.get('posting_time')
+        
+
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+
+
+        if author:
+            queryset = queryset.filter(author__username__icontains=author)
+
+        if posting_time:
+            queryset = queryset.filter(created_at__gte=posting_time)
+ 
+        return queryset
+    
+
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -72,7 +91,3 @@ def add_comment_to_post(request, pk):
     return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
 
 
-# class UserListView(ListView):
-#     model = User
-#     template_name = 'users/user_list.html'  # Create this template
-#     context_object_name = 'users'
