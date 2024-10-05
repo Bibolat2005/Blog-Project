@@ -7,19 +7,21 @@ from .models import Post
 from django.contrib.auth.decorators import login_required
 from .models import Comment
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
 
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     ordering = ['-created_at']
-    
+    paginate_by = 2  # Количество постов на одной странице
 
     def get_queryset(self):
         queryset = super().get_queryset()
         title = self.request.GET.get('title')
         author = self.request.GET.get('author')
         posting_time = self.request.GET.get('posting_time')
+        
         
 
         if title:
@@ -34,6 +36,23 @@ class PostListView(ListView):
  
         return queryset
     
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if any([self.request.GET.get('title'), self.request.GET.get('author'), self.request.GET.get('posting_time')]):
+            context['posts'] = self.get_paginated_queryset()
+        else:
+            context['posts'] = self.get_queryset() 
+
+        return context
+
+    def get_paginated_queryset(self):
+        queryset = self.get_queryset()
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return page_obj
+
 
 
 def post_detail(request, pk):
