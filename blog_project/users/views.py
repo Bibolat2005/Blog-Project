@@ -48,11 +48,11 @@ def profile_detail(request, username):
 
     is_following = Follow.objects.filter(follower=request.user, following=user).exists()
 
-    followers_count = Follow.objects.filter(following=user).count()  # Количество подписчиков
-    following_count = Follow.objects.filter(follower=user).count()  # Количество подписок
+    followers_count = Follow.objects.filter(following=user).count() 
+    following_count = Follow.objects.filter(follower=user).count()
 
-    followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True)  # Список подписчиков
-    following_users = Follow.objects.filter(follower=user).values_list('following__username', flat=True)  # Список пользователей, на которых подписан
+    followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True) 
+    following_users = Follow.objects.filter(follower=user).values_list('following__username', flat=True) 
 
     return render(request, 'users/profile.html', {
         'profile': profile,
@@ -61,7 +61,7 @@ def profile_detail(request, username):
         'followers_count': followers_count,
         'following_count': following_count,
         'followers': followers,
-        'following_users': following_users,  # Передаем список пользователей, на которых подписан
+        'following_users': following_users,  
         'MEDIA_URL': settings.MEDIA_URL,
     })
 
