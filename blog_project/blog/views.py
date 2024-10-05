@@ -93,6 +93,13 @@ def post_delete(request, pk):
         return redirect('post_list')
     return HttpResponseForbidden("You are not allowed to delete this post.")
 
+
+def comment_list(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    comments = post.comments.all() 
+    return render(request, 'blog/comment_list.html', {'post': post, 'comments': comments})
+
+
 @login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)

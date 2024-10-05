@@ -6,7 +6,7 @@ from .forms import ProfileForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.conf import settings
-
+from django.contrib.auth.decorators import login_required
 
 
 def register(request):
@@ -38,7 +38,8 @@ def profile_detail(request, username):
                 return redirect('profile_detail', username=user.username)
         else:
             if 'follow' in request.POST:
-                Follow.objects.get_or_create(follower=request.user, following=user)
+                if request.user != user:  
+                    Follow.objects.get_or_create(follower=request.user, following=user)
             elif 'unfollow' in request.POST:
                 Follow.objects.filter(follower=request.user, following=user).delete()
     else:
@@ -46,11 +47,7 @@ def profile_detail(request, username):
             form = ProfileForm(instance=profile)
 
     is_following = Follow.objects.filter(follower=request.user, following=user).exists()
-    followers_count = Follow.objects.filter(following=user).count()
-    following_count = Follow.objects.filter(follower=user).count()
-
-
-    following_users = Follow.objects.filter(follower=request.user).values_list('following__username', flat=True)
+    followers_count = Follow.objects.filter(following=user).count() 
 
     followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True)
 
@@ -59,12 +56,9 @@ def profile_detail(request, username):
         'form': form,
         'is_following': is_following,
         'followers_count': followers_count,
-        'following_count': following_count,
         'followers': followers, 
-        'following_users': following_users,
         'MEDIA_URL': settings.MEDIA_URL,
     })
-
 
 def edit_profile(request):
     profile = get_object_or_404(Profile, user=request.user)
@@ -78,16 +72,22 @@ def edit_profile(request):
     return render(request, 'users/profile.html', {'form': form}) 
 #сделал так, чтобы только авторизованный юзер ,смог редактировать только свой профиль прямой в профиле 
 
+@login_required
 def follow_user(request, username):
     user_to_follow = get_object_or_404(User, username=username)
+    
     if request.user != user_to_follow:  
-        Follow.objects.get_or_create(follower=request.user, following=user_to_follow) 
+        Follow.objects.get_or_create(follower=request.user, following=user_to_follow)
+        
     return redirect('profile_detail', username=username)
 
+@login_required
 def unfollow_user(request, username):
     user_to_unfollow = get_object_or_404(User, username=username)
+    
     if request.user != user_to_unfollow: 
-        Follow.objects.filter(follower=request.user, following=user_to_unfollow).delete() 
+        Follow.objects.filter(follower=request.user, following=user_to_unfollow).delete()
+        
     return redirect('profile_detail', username=username)
 
 def redirect_to_profile(request):

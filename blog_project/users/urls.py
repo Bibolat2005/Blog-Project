@@ -9,5 +9,5 @@ urlpatterns = [
     path('profile/<str:username>/', views.profile_detail, name='profile_detail'),
     path('profile/<str:username>/follow/', views.follow_user, name='follow_user'),
     path('profile/<str:username>/unfollow/', views.unfollow_user, name='unfollow_user'),
-     path('profile/', views.redirect_to_profile, name='redirect_to_profile'),
+    path('profile/', views.redirect_to_profile, name='redirect_to_profile'),
 ]

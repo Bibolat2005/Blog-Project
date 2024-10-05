@@ -100,7 +100,6 @@
 
         <p>Bio: {{ profile.bio }}</p>
         <p>Followers: <span class="following-count">{{ followers_count }}</span></p>
-        <p>Following: <span class="following-count">{{ following_count }}</span></p>
 
         <h3>Followers:</h3>
         <ul>
@@ -108,15 +107,6 @@
                 <li>{{ follower }}</li>
             {% empty %}
                 <li>No followers yet.</li>
-            {% endfor %}
-        </ul>
-
-        <h3>Following:</h3>
-        <ul>
-            {% for followed_user in following_users %}
-                <li>{{ followed_user }}</li>
-            {% empty %}
-                <li>Not following anyone yet.</li>
             {% endfor %}
         </ul>
 
