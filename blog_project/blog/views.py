@@ -5,7 +5,6 @@ from django.shortcuts import redirect
 from .forms import PostForm, CommentForm
 from .models import Post
 from django.contrib.auth.decorators import login_required
-from .models import Comment
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 
@@ -14,7 +13,7 @@ class PostListView(ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
     ordering = ['-created_at']
-    paginate_by = 2  # Количество постов на одной странице
+    paginate_by = 2 
 
     def get_queryset(self):
         queryset = super().get_queryset()

@@ -30,7 +30,7 @@
             <input type="hidden" name="title" value="{{ request.GET.title }}">
             <input type="hidden" name="author" value="{{ request.GET.author }}">
             <input type="hidden" name="posting_time" value="{{ request.GET.posting_time }}">
-            <button type="submit" name="page" value="1" class="pagination-button">First</button>
+            <button type="submit" name="page" value="1" class="pagination-button">Start</button>
             <button type="submit" name="page" value="{{ posts.previous_page_number }}" class="pagination-button">Previous</button>
         </form>
     {% endif %}
@@ -45,7 +45,7 @@
             <input type="hidden" name="author" value="{{ request.GET.author }}">
             <input type="hidden" name="posting_time" value="{{ request.GET.posting_time }}">
             <button type="submit" name="page" value="{{ posts.next_page_number }}" class="pagination-button">Next</button>
-            <button type="submit" name="page" value="{{ posts.paginator.num_pages }}" class="pagination-button">Last</button>
+            <button type="submit" name="page" value="{{ posts.paginator.num_pages }}" class="pagination-button">End</button>
         </form>
     {% endif %}
 </div>
