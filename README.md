@@ -3,7 +3,7 @@
 <ul>
 <li>
   Login and Logout 
-  Pagination(When we search something from posts, if size of posts is greater than 2, then pagination will work )
-  Search for posts
 </li>
+  <li>Pagination(When we search something from posts, if size of posts is greater than 2, then pagination will work )</li>
+  <li>Search for posts</li>
 </ul>
