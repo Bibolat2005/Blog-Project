@@ -1,9 +1,92 @@
-<h1>{% if post %}Edit Post{% else %}Create New Post{% endif %}</h1>
-<style>
-    .container { max-width: 400px; margin: auto; }
-    .btn { padding: 10px 20px; border: none; cursor: pointer; background-color: rgb(215, 56, 189); color: white; }
-</style>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class = "btn">Create </button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if post %}Edit Post{% else %}Create New Post{% endif %}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFB6C1, #d5c8cf);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #FF69B4;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            background-color: #FF1493;
+            color: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            font-size: 1em;
+        }
+
+        button:hover {
+            background-color: #C71585;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{% if post %}Edit Post{% else %}Create New Post{% endif %}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">{% if post %}Update{% else %}Create{% endif %}</button>
+        </form>
+        <a href="{% url 'post_list' %}">Back to Posts</a>
+    </div>
+</body>
+</html>

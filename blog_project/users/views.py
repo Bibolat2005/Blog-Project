@@ -50,6 +50,8 @@ def profile_detail(request, username):
     following_count = Follow.objects.filter(follower=user).count()
 
 
+    following_users = Follow.objects.filter(follower=request.user).values_list('following__username', flat=True)
+
     followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True)
 
     return render(request, 'users/profile.html', {
@@ -59,6 +61,7 @@ def profile_detail(request, username):
         'followers_count': followers_count,
         'following_count': following_count,
         'followers': followers, 
+        'following_users': following_users,
         'MEDIA_URL': settings.MEDIA_URL,
     })
 
