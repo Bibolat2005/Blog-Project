@@ -76,6 +76,7 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'users/profile.html', {'form': form}) 
+#сделал так, чтобы только авторизованный юзер ,смог редактировать только свой профиль прямой в профиле 
 
 def follow_user(request, username):
     user_to_follow = get_object_or_404(User, username=username)
