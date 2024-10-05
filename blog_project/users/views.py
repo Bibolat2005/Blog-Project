@@ -47,18 +47,24 @@ def profile_detail(request, username):
             form = ProfileForm(instance=profile)
 
     is_following = Follow.objects.filter(follower=request.user, following=user).exists()
-    followers_count = Follow.objects.filter(following=user).count() 
 
-    followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True)
+    followers_count = Follow.objects.filter(following=user).count()  # Количество подписчиков
+    following_count = Follow.objects.filter(follower=user).count()  # Количество подписок
+
+    followers = Follow.objects.filter(following=user).values_list('follower__username', flat=True)  # Список подписчиков
+    following_users = Follow.objects.filter(follower=user).values_list('following__username', flat=True)  # Список пользователей, на которых подписан
 
     return render(request, 'users/profile.html', {
         'profile': profile,
         'form': form,
         'is_following': is_following,
         'followers_count': followers_count,
-        'followers': followers, 
+        'following_count': following_count,
+        'followers': followers,
+        'following_users': following_users,  # Передаем список пользователей, на которых подписан
         'MEDIA_URL': settings.MEDIA_URL,
     })
+
 
 def edit_profile(request):
     profile = get_object_or_404(Profile, user=request.user)
