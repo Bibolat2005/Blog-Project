@@ -11,7 +11,7 @@
 <h3>Search for posts</h3>
 <img width="958" alt="MainPage" src="https://github.com/user-attachments/assets/535d6770-83e7-48e7-bd72-0f7d7c263ab3">
 
-<h3>>Pagination(When we search something from posts, if size of posts is greater than 2, then pagination will work )</h3>
+<h3>Pagination(When we search something from posts, if size of posts is greater than 2, then pagination will work )</h3>
 <img width="960" alt="Paginate" src="https://github.com/user-attachments/assets/78f87f9f-7f4e-40ae-96a4-c4a131043599">
 
 <h3>Login and Logout </h3>
